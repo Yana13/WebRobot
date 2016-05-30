@@ -12,6 +12,8 @@ import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.web.rest.dto.ManagedUserDTO;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import com.mycompany.myapp.web.rest.util.PaginationUtil;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.*;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.io.OutputStreamWriter;
@@ -193,50 +196,6 @@ public class UserResource {
         return new ResponseEntity<>(managedUserDTOs, headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/spy/{word}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    @Transactional(readOnly = true)
-    public ResponseEntity<List<ManagedUserDTO>> spyOn(@PathVariable String word)
-        throws URISyntaxException {
-
-        try {
-            URL url = new URL("https://www.google.com.ua/search?q=sdfdf");
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-            httpCon.setDoOutput(true);
-            httpCon.setRequestMethod("HEAD");
-            httpCon.setRequestProperty("HOST", "www.google.com.ua");
-            httpCon.setRequestProperty("cookie", "NID=79");
-            httpCon.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-            OutputStreamWriter out = new OutputStreamWriter(
-                httpCon.getOutputStream());
-            int code = httpCon.getResponseCode();
-            String message = httpCon.getResponseMessage();
-            BufferedReader br = new BufferedReader(new InputStreamReader((httpCon.getInputStream())));
-            StringBuilder sb = new StringBuilder();
-            String output;
-            while ((output = br.readLine()) != null) {
-                sb.append(output);
-                message = sb.toString();
-            }
-
-            Optional<User> user = userRepository
-                .findOneByEmail("yana4friends@gmail.com");
-            //mailService.sendCreationEmail(user.get(), "http://momentjs.com/");
-            mailService.sendHtmlEmail(user.get(), message);
-            out.close();
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
         /**
      * GET  /users/:login : get the "login" user.
      *

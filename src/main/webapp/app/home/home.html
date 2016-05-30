@@ -3,5 +3,24 @@
         <label title="Enter key word to spy on:">Enter key word to spy on:</label>
         <input type="text" ng-model ="model.textToSpyOn" />
         <button type="button" title="Spy!" ng-click ="spyOn()">Spy!</button>
+        <button type="button" title="Unsubscribe!" ng-click ="stopSpying()">Unsubscribe</button>
+
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Link</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items track by item.title">
+                <td>{i{tem.title}}</td>
+                <td><a ui-sref="item.link">{{item.link}}</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

@@ -68,9 +68,9 @@ public class MailService {
 
     @Async
     public void sendHtmlEmail(User user,String contentMail ) {
-        log.debug("Sending creation e-mail to '{}'", user.getEmail());
+      //  log.debug("Sending creation e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
-        String subject = messageSource.getMessage("email.activation.title", null, locale);
+        String subject = "Spy robot";
         sendEmail(user.getEmail(), subject, contentMail, false, true);
     }
 
